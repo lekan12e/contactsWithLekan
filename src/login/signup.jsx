@@ -15,10 +15,11 @@ const SignUp = () => {
         setMessage('');
 
         try {
-            const response = await fetch('http://localhost:5001/api/user/register', {
+            const response = await fetch('https://9a7e-102-89-23-170.ngrok-free.app/api/user/register', {
                 method: 'POST',
                 headers: {
                     'Content-Type': 'application/json',
+                    'ngrok-skip-browser-warning': 'true'
                 },
                 body: JSON.stringify({ username, email, password }),
             });

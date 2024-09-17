@@ -24,10 +24,11 @@ function Dashboard() {
         }
 
         try {
-            const response = await fetch('http://localhost:5001/api/contacts', {
+            const response = await fetch('https://9a7e-102-89-23-170.ngrok-free.app/api/contacts', {
                 method: 'GET',
                 headers: {
                     'Authorization': `Bearer ${token}`,
+                    'ngrok-skip-browser-warning': 'true'
                 },
             });
             const result = await response.json();
@@ -48,11 +49,12 @@ function Dashboard() {
         e.preventDefault();
         const token = localStorage.getItem('token');
         try {
-            const response = await fetch('http://localhost:5001/api/contacts', {
+            const response = await fetch('https://9a7e-102-89-23-170.ngrok-free.app/api/contacts', {
                 method: 'POST',
                 headers: {
                     'Content-Type': 'application/json',
                     'Authorization': `Bearer ${token}`,
+                    'ngrok-skip-browser-warning': 'true'
                 },
                 body: JSON.stringify({ email, phone, name }),
             });
@@ -70,11 +72,12 @@ function Dashboard() {
         e.preventDefault();
         const token = localStorage.getItem('token');
         try {
-            const response = await fetch(`http://localhost:5001/api/contacts/${_id}`, {
+            const response = await fetch(`https://9a7e-102-89-23-170.ngrok-free.app/api/contacts/${_id}`, {
                 method: 'PUT',
                 headers: {
                     'Content-Type': 'application/json',
                     'Authorization': `Bearer ${token}`,
+                    'ngrok-skip-browser-warning': 'true'
                 },
                 body: JSON.stringify({ email: editEmail, phone: editPhone, name: editName }),
             });
@@ -105,11 +108,12 @@ function Dashboard() {
     const handleDelete = async (_id) => {
         const token = localStorage.getItem('token');
         try {
-            const response = await fetch(`http://localhost:5001/api/contacts/${_id}`, {
+            const response = await fetch(`https://9a7e-102-89-23-170.ngrok-free.app/api/contacts/${_id}`, {
                 method: 'DELETE',
                 headers: {
                     'Content-Type': 'application/json',
                     'Authorization': `Bearer ${token}`,
+                    'ngrok-skip-browser-warning': 'true'
                 }
             });
 
