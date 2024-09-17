@@ -34,7 +34,7 @@ function LoginForm() {
 
         } catch (error) {
             console.error(error);
-            setError('An error occurred. Please try again.');
+            setError(`${error}`);
         }
     };
 
