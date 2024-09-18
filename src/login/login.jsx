@@ -1,11 +1,17 @@
 import React, { useState } from 'react';
 import { Link, useNavigate } from 'react-router-dom';
+import { RemoveRedEye, VisibilityOff } from '@mui/icons-material';
 
 function LoginForm() {
     const [email, setEmail] = useState('');
     const [password, setPassword] = useState('');
+    const [showPassword, setShowPassword] = useState(false);
     const [error, setError] = useState('');
     const navigate = useNavigate()
+
+    const togglePasswordVisibility = () => {
+        setShowPassword(!showPassword);
+    };
 
     const handleSubmit = async (e) => {
         e.preventDefault();
@@ -60,15 +66,21 @@ function LoginForm() {
                             required 
                         />
                     </div>
-                    <div className='flex items-center gap-2 justify-center w-full p-3'>
+                    <div className='flex items-center gap-2 justify-center w-full p-3 relative'>
                         <label>Password:</label>
                         <input
-                            className='outline-none text-2xl px-3 py-1 rounded-lg' 
-                            type="password" 
-                            value={password} 
-                            onChange={(e) => setPassword(e.target.value)} 
-                            required 
+                            className='outline-none text-2xl px-3 py-1 rounded-lg w-full'
+                            type={showPassword ? "text" : "password"}
+                            value={password}
+                            onChange={(e) => setPassword(e.target.value)}
+                            required
                         />
+                        <span 
+                            className='absolute right-5 cursor-pointer'
+                            onClick={togglePasswordVisibility}
+                        >
+                            {showPassword ? <VisibilityOff /> : <RemoveRedEye />}
+                        </span>
                     </div>
                     <button className='text-xl mt-4 font-bold bg-blue-800 px-8 py-2 rounded-md text-white hover:bg-red-400 shadow-md' type="submit">
                         Login
