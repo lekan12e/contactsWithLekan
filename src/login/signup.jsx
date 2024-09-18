@@ -4,6 +4,7 @@ import { Link } from 'react-router-dom';
 const SignUp = () => {
     const [email, setEmail] = useState('');
     const [password, setPassword] = useState('');
+    const [confirmPassword, setConfirmPassword] = useState(''); // New state for confirm password
     const [username, setUserName] = useState('');
     const [error, setError] = useState('');
     const [toggle, setToggle] = useState(false);
@@ -13,6 +14,12 @@ const SignUp = () => {
         e.preventDefault();
         setError('');
         setMessage('');
+
+        // Check if passwords match before proceeding
+        if (password !== confirmPassword) {
+            setError("Passwords do not match.");
+            return;
+        }
 
         try {
             const response = await fetch('https://5784-102-89-23-170.ngrok-free.app/api/user/register', {
@@ -52,7 +59,6 @@ const SignUp = () => {
                 <h2 className='text-4xl font-bold'>Register</h2>
                 <div className='flex'>
                     <p className='text-xl text-red-500'>{error || message}<Link className={`${toggle ? "block" : "hidden"} text-white`} to='/'>here</Link></p>
-                    
                 </div>
 
                 {/* Form */}
@@ -74,6 +80,16 @@ const SignUp = () => {
                             type="password"
                             value={password}
                             onChange={(e) => setPassword(e.target.value)}
+                            required
+                        />
+                    </div>
+                    <div className='flex items-center gap-2 justify-center w-full p-3'>
+                        <label>Confirm Password:</label>
+                        <input
+                            className='outline-none text-2xl px-3 py-1 rounded-lg'
+                            type="password"
+                            value={confirmPassword}
+                            onChange={(e) => setConfirmPassword(e.target.value)}
                             required
                         />
                     </div>
