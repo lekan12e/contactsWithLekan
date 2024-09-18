@@ -1,14 +1,19 @@
 import React, { useState } from 'react';
 import { Link } from 'react-router-dom';
+import { RemoveRedEye, VisibilityOff } from '@mui/icons-material';
 
 const SignUp = () => {
     const [email, setEmail] = useState('');
     const [password, setPassword] = useState('');
-    const [confirmPassword, setConfirmPassword] = useState(''); // New state for confirm password
+    const [confirmPassword, setConfirmPassword] = useState('');
     const [username, setUserName] = useState('');
     const [error, setError] = useState('');
     const [toggle, setToggle] = useState(false);
     const [message, setMessage] = useState('');
+    
+    // States to track password visibility
+    const [showPassword, setShowPassword] = useState(false);
+    const [showConfirmPassword, setShowConfirmPassword] = useState(false);
 
     const handleSubmit = async (e) => {
         e.preventDefault();
@@ -34,7 +39,6 @@ const SignUp = () => {
             const data = await response.json();
 
             if (!response.ok) {
-                // Check if the response indicates the account already exists
                 setError('Account already exists.');
                 setToggle(false);
             } else {
@@ -52,6 +56,10 @@ const SignUp = () => {
     const handleToggle = () => {
         setToggle(true);
     };
+
+    // Toggles for password visibility
+    const togglePasswordVisibility = () => setShowPassword(!showPassword);
+    const toggleConfirmPasswordVisibility = () => setShowConfirmPassword(!showConfirmPassword);
 
     return (
         <div className='flex flex-col items-center h-[100vh] bg-orange-200 w-full justify-center'>
@@ -73,25 +81,37 @@ const SignUp = () => {
                             required
                         />
                     </div>
-                    <div className='flex items-center gap-2 justify-center w-full p-3'>
+                    <div className='flex items-center gap-2 justify-center w-full p-3 relative'>
                         <label>Password:</label>
                         <input
-                            className='outline-none text-2xl px-3 py-1 rounded-lg'
-                            type="password"
+                            className='outline-none text-2xl px-3 py-1 rounded-lg w-full'
+                            type={showPassword ? "text" : "password"}
                             value={password}
                             onChange={(e) => setPassword(e.target.value)}
                             required
                         />
+                        <span 
+                            className='absolute right-3 cursor-pointer'
+                            onClick={togglePasswordVisibility}
+                        >
+                            {showPassword ? <VisibilityOff /> : <RemoveRedEye />}
+                        </span>
                     </div>
-                    <div className='flex items-center gap-2 justify-center w-full p-3'>
+                    <div className='flex items-center gap-2 justify-center w-full p-3 relative'>
                         <label>Confirm Password:</label>
                         <input
-                            className='outline-none text-2xl px-3 py-1 rounded-lg'
-                            type="password"
+                            className='outline-none text-2xl px-3 py-1 rounded-lg w-full'
+                            type={showConfirmPassword ? "text" : "password"}
                             value={confirmPassword}
                             onChange={(e) => setConfirmPassword(e.target.value)}
                             required
                         />
+                        <span 
+                            className='absolute right-3 cursor-pointer'
+                            onClick={toggleConfirmPasswordVisibility}
+                        >
+                            {showConfirmPassword ? <VisibilityOff /> : <RemoveRedEye />}
+                        </span>
                     </div>
                     <div className='flex items-center gap-2 justify-center w-full p-3'>
                         <label>Username:</label>
