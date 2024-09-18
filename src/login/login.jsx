@@ -1,6 +1,8 @@
 import React, { useState } from 'react';
 import { Link, useNavigate } from 'react-router-dom';
 import { RemoveRedEye, VisibilityOff } from '@mui/icons-material';
+import loginLog from '../assets/login-logo.png' 
+import companyLogo from '../assets/company-logo.png'
 
 function LoginForm() {
     const [email, setEmail] = useState('');
@@ -46,50 +48,63 @@ function LoginForm() {
     };
 
     return (
-        <div className='flex flex-col items-center h-[100vh] bg-orange-200 w-full justify-center'>
-            <div className='flex flex-col items-center justify-center py-40 px-20 rounded-lg shadow-xl font-mono text-xl gap-10 bg-lime-500'>
-                <h2 className='text-4xl font-bold'>Login</h2>
+        <div className='flex flex-row items-center h-[100vh] w-full'>
+            <div className='flex h-full w-[50%] bg-[#FBFAF9] shadow-md items-center justify-center'>
+                <div className='w-[886px] h-[510px]'>
+                <img className='w-full h-full' src={loginLog} alt="login logo" />
+                </div>
+            </div>
+            <div className='flex w-[50%] items-center justify-center'>
+                <div className='flex flex-col items-center justify-center w-full px-52 font-sans text-xl gap-10'>
+                    <div className='flex flex-col gap-7 w-full'>
+                        <div className='flex justify-start items-start'>
+                            <img className='w-[286px] h-[128px]' src={companyLogo} alt="company logo" />
+                        </div>
+                        <div className='flex flex-col'>
+                            <h2 className='text-4xl font-bold'>Welcome Back</h2>
+                            <p className='text-[#989898] text-2xl leading-10'>Welcome back! Please enter your details.</p>
+                        </div>
+                        {error && (
+                            <p className="text-red-600 font-bold">{error}</p>
+                        )}
 
-                {/* Display the error message above the form if it exists */}
-                {error && (
-                    <p className="text-red-600 font-bold">{error}</p>
-                )}
-
-                <form className='flex flex-col items-center gap-4' onSubmit={handleSubmit}>
-                    <div className='flex items-center gap-2 justify-center w-full p-3'>
-                        <label>Email:</label>
-                        <input
-                            className='outline-none text-2xl px-3 py-1 rounded-lg'
-                            type="email" 
-                            value={email} 
-                            onChange={(e) => setEmail(e.target.value)} 
-                            required 
-                        />
+                        <form className='flex flex-col pr-8 items-center gap-4' onSubmit={handleSubmit}>
+                            <div className='flex flex-col items-start gap-2 justify-center w-full'>
+                                <label>Email</label>
+                                <input
+                                    className='outline-none text-2xl px-5 bg-[#EDEDED] py-6 rounded w-full'
+                                    type="email" 
+                                    value={email} 
+                                    onChange={(e) => setEmail(e.target.value)} 
+                                    required 
+                                />
+                            </div>
+                            <div className='flex flex-col items-start gap-2 justify-center w-full relative'>
+                                <label>Password:</label>
+                                <input
+                                    className='outline-none text-2xl px-5 bg-[#EDEDED] py-6 rounded w-full'
+                                    type={showPassword ? "text" : "password"}
+                                    value={password}
+                                    onChange={(e) => setPassword(e.target.value)}
+                                    required
+                                />
+                                <span 
+                                    className='absolute right-5 top-14 cursor-pointer'
+                                    onClick={togglePasswordVisibility}
+                                >
+                                    {showPassword ? <VisibilityOff sx={{width : '22px', height: '22px'}} /> : <RemoveRedEye sx={{width : '22px', height: '22px'}} />}
+                                </span>
+                            </div>
+                            <button className='text-2xl mt-4 font-bold bg-black w-full py-3 rounded-md text-white hover:bg-red-400 shadow-md' type="submit">
+                                Login
+                            </button>
+                        </form>
+                        <div className='pt-10'>
+                            <p>
+                                Don't have an account? Create here <Link className='text-white font-bold bg-slate-500 rounded-md p-2 hover:bg-red-400 hover:text-green-300' to='/signup'>Sign Up</Link>
+                            </p>
+                        </div>
                     </div>
-                    <div className='flex items-center gap-2 justify-center w-full p-3 relative'>
-                        <label>Password:</label>
-                        <input
-                            className='outline-none text-2xl px-3 py-1 rounded-lg w-full'
-                            type={showPassword ? "text" : "password"}
-                            value={password}
-                            onChange={(e) => setPassword(e.target.value)}
-                            required
-                        />
-                        <span 
-                            className='absolute right-5 cursor-pointer'
-                            onClick={togglePasswordVisibility}
-                        >
-                            {showPassword ? <VisibilityOff /> : <RemoveRedEye />}
-                        </span>
-                    </div>
-                    <button className='text-xl mt-4 font-bold bg-blue-800 px-8 py-2 rounded-md text-white hover:bg-red-400 shadow-md' type="submit">
-                        Login
-                    </button>
-                </form>
-                <div>
-                    <p>
-                        Don't have an account? Create here <Link className='text-white font-bold bg-slate-500 rounded-md p-2 hover:bg-red-400 hover:text-green-300' to='/signup'>Sign Up</Link>
-                    </p>
                 </div>
             </div>
         </div>
