@@ -24,7 +24,7 @@ function Dashboard() {
         }
 
         try {
-            const response = await fetch('https://9a7e-102-89-23-170.ngrok-free.app/api/contacts', {
+            const response = await fetch('https://5784-102-89-23-170.ngrok-free.app/api/contacts', {
                 method: 'GET',
                 headers: {
                     'Authorization': `Bearer ${token}`,
@@ -49,7 +49,7 @@ function Dashboard() {
         e.preventDefault();
         const token = localStorage.getItem('token');
         try {
-            const response = await fetch('https://9a7e-102-89-23-170.ngrok-free.app/api/contacts', {
+            const response = await fetch('https://5784-102-89-23-170.ngrok-free.app/api/contacts', {
                 method: 'POST',
                 headers: {
                     'Content-Type': 'application/json',
@@ -72,7 +72,7 @@ function Dashboard() {
         e.preventDefault();
         const token = localStorage.getItem('token');
         try {
-            const response = await fetch(`https://9a7e-102-89-23-170.ngrok-free.app/api/contacts/${_id}`, {
+            const response = await fetch(`https://5784-102-89-23-170.ngrok-free.app/api/contacts/${_id}`, {
                 method: 'PUT',
                 headers: {
                     'Content-Type': 'application/json',
@@ -108,7 +108,7 @@ function Dashboard() {
     const handleDelete = async (_id) => {
         const token = localStorage.getItem('token');
         try {
-            const response = await fetch(`https://9a7e-102-89-23-170.ngrok-free.app/api/contacts/${_id}`, {
+            const response = await fetch(`https://5784-102-89-23-170.ngrok-free.app/api/contacts/${_id}`, {
                 method: 'DELETE',
                 headers: {
                     'Content-Type': 'application/json',
