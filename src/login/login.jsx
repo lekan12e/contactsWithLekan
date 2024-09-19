@@ -21,11 +21,10 @@ function LoginForm() {
         setError(''); // Clear any previous errors
 
         try {
-            const response = await fetch('https://5784-102-89-23-170.ngrok-free.app/api/user/login', {
+            const response = await fetch('https://sever-1-qnb2.onrender.com/api/user/login', {
                 method: 'POST',
                 headers: {
                     'Content-Type': 'application/json',
-                    'ngrok-skip-browser-warning': 'true'
                 },
                 body: JSON.stringify({ email, password }),
             });
@@ -99,7 +98,7 @@ function LoginForm() {
                                 Login
                             </button>
                         </form>
-                        <div className='pt-10'>
+                        <div className='pt-10 text-end'>
                             <p>
                                 Don't have an account? Create here <Link className='text-white font-bold bg-slate-500 rounded-md p-2 hover:bg-red-400 hover:text-green-300' to='/signup'>Sign Up</Link>
                             </p>

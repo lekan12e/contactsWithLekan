@@ -29,7 +29,7 @@ const SignUp = () => {
         }
 
         try {
-            const response = await fetch('https://5784-102-89-23-170.ngrok-free.app/api/user/register', {
+            const response = await fetch('https://sever-1-qnb2.onrender.com/api/user/register', {
                 method: 'POST',
                 headers: {
                     'Content-Type': 'application/json',
@@ -144,7 +144,7 @@ const SignUp = () => {
                                 Sign Up
                             </button>
                         </form>
-                        <div className='pt-10'>
+                        <div className='pt-10 text-end'>
                             <p>
                                 Already have an account? <Link className='text-white font-bold bg-slate-500 rounded-md p-2 hover:bg-red-400 hover:text-green-300' to='/'>Log In</Link>
                             </p>
