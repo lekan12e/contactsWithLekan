@@ -125,8 +125,12 @@ function Dashboard() {
         checkAuth(); // Initial data fetch
     }, []);
 
-    if (!isAuthenticated) {
-        return <p>loading......</p>;
+      if (!isAuthenticated) {
+        return (
+            <div className="flex items-center justify-center h-screen">
+                <div className="w-20 h-20 border-4 border-t-4 border-t-blue-500 rounded-full animate-spin"></div>
+            </div>
+        );
     }
 
     return (

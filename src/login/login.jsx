@@ -1,6 +1,7 @@
 import React, { useState } from 'react';
 import { Link, useNavigate } from 'react-router-dom';
 import { RemoveRedEye, VisibilityOff } from '@mui/icons-material';
+import { CircularProgress } from '@mui/material'; // Import the spinner from Material UI
 import loginLogo from '../assets/login-logo.png';
 import companyLogo from '../assets/company-logo.png';
 
@@ -9,6 +10,7 @@ function LoginForm() {
     const [password, setPassword] = useState('');
     const [showPassword, setShowPassword] = useState(false);
     const [error, setError] = useState('');
+    const [loading, setLoading] = useState(false); // Add loading state
     const navigate = useNavigate();
 
     const togglePasswordVisibility = () => {
@@ -17,8 +19,8 @@ function LoginForm() {
 
     const handleSubmit = async (e) => {
         e.preventDefault();
-
         setError(''); // Clear any previous errors
+        setLoading(true); // Start the loading spinner
 
         try {
             const response = await fetch('https://sever-1-qnb2.onrender.com/api/user/login', {
@@ -30,6 +32,7 @@ function LoginForm() {
             });
 
             const data = await response.json();
+            setLoading(false); // Stop the loading spinner
 
             if (response.ok) { // If login is successful
                 console.log("Login successful", data.accessToken);
@@ -37,12 +40,16 @@ function LoginForm() {
                 navigate("/dashboard");
             } else {
                 // If login fails, show an error message
-                setError('Wrong email or password entered. Please try again.');
+                setError('Wrong email or password entered. Please enter the correct login details and try again.');
             }
-
         } catch (error) {
-            console.error(error);
-            setError(`${error}`);
+            console.log(error.message);
+            setLoading(false); // Stop the loading spinner if an error occurs
+            if (error.message === "Failed to fetch") {
+                setError('Internal server error, please try again later.');
+            } else {
+                setError('error: ' + error.message);
+            }
         }
     };
 
@@ -51,7 +58,7 @@ function LoginForm() {
             {/* Image container */}
             <div className='absolute inset-0 sm:relative sm:h-full sm:w-[50%] flex items-center justify-center bg-[#FBFAF9] shadow-md'>
                 <img
-                    className='h-[200px] w-[200px] sm:h-[510px] sm:w-[886px] object-cover z-0'
+                    className='h-[200px] w-[200px] sm:h-[510px] sm:w-[886px] object-cover opacity-50 z-0'
                     src={loginLogo}
                     alt="login logo"
                 />
@@ -96,11 +103,15 @@ function LoginForm() {
                                     className='absolute right-4 top-14 cursor-pointer'
                                     onClick={togglePasswordVisibility}
                                 >
-                                    {showPassword ? <VisibilityOff sx={{width : '22px', height: '22px'}} /> : <RemoveRedEye sx={{width : '22px', height: '22px'}} />}
+                                    {showPassword ? <VisibilityOff sx={{ width: '22px', height: '22px' }} /> : <RemoveRedEye sx={{ width: '22px', height: '22px' }} />}
                                 </span>
                             </div>
-                            <button className='text-xl sm:text-2xl mt-4 font-bold bg-black w-full py-3 rounded-md text-white hover:bg-red-400 shadow-md' type="submit">
-                                Login
+                            <button 
+                                className='text-xl sm:text-2xl mt-4 font-bold bg-black w-full py-3 rounded-md text-white hover:bg-red-400 shadow-md flex items-center justify-center' 
+                                type="submit"
+                                disabled={loading} // Disable the button when loading
+                            >
+                                {loading ? <CircularProgress size={24} sx={{ color: 'white' }} /> : 'Login'}
                             </button>
                         </form>
                         <div className='pt-10 text-end'>

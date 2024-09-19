@@ -10,8 +10,8 @@ const SignUp = () => {
     const [confirmPassword, setConfirmPassword] = useState('');
     const [username, setUserName] = useState('');
     const [error, setError] = useState('');
-    const [toggle, setToggle] = useState(false);
     const [message, setMessage] = useState('');
+    const [loading, setLoading] = useState(false);
 
     // States to track password visibility
     const [showPassword, setShowPassword] = useState(false);
@@ -21,10 +21,12 @@ const SignUp = () => {
         e.preventDefault();
         setError('');
         setMessage('');
+        setLoading(true); // Start the loader
 
         // Check if passwords match before proceeding
         if (password !== confirmPassword) {
             setError("Passwords do not match.");
+            setLoading(false); // Stop loader if error
             return;
         }
 
@@ -42,21 +44,16 @@ const SignUp = () => {
 
             if (!response.ok) {
                 setError('Account already exists.');
-                setToggle(false);
             } else {
                 setMessage('Account created successfully, proceed to log in.');
-                handleToggle();
             }
 
         } catch (error) {
             console.error(error);
             setError('An error occurred. Please try again.');
-            setToggle(false);
+        } finally {
+            setLoading(false); // Stop the loader after response
         }
-    };
-
-    const handleToggle = () => {
-        setToggle(true);
     };
 
     // Toggles for password visibility
@@ -148,8 +145,12 @@ const SignUp = () => {
                                     {showConfirmPassword ? <VisibilityOff sx={{width : '22px', height: '22px'}} /> : <RemoveRedEye sx={{width : '22px', height: '22px'}} />}
                                 </span>
                             </div>
-                            <button className='text-2xl mt-4 font-bold bg-black w-full py-3 rounded-md text-white hover:bg-red-400 shadow-md' type="submit">
-                                Sign Up
+                            <button className='text-2xl mt-4 font-bold bg-black w-full py-3 rounded-md text-white hover:bg-red-400 shadow-md flex justify-center items-center' type="submit">
+                                {loading ? (
+                                    <div className="w-6 h-6 border-4 border-dotted border-white border-t-transparent animate-spin rounded-full"></div>
+                                ) : (
+                                    'Sign Up'
+                                )}
                             </button>
                         </form>
                         <div className='pt-10 text-end'>
