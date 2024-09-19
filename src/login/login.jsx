@@ -1,15 +1,15 @@
 import React, { useState } from 'react';
 import { Link, useNavigate } from 'react-router-dom';
 import { RemoveRedEye, VisibilityOff } from '@mui/icons-material';
-import loginLog from '../assets/login-logo.png' 
-import companyLogo from '../assets/company-logo.png'
+import loginLogo from '../assets/login-logo.png';
+import companyLogo from '../assets/company-logo.png';
 
 function LoginForm() {
     const [email, setEmail] = useState('');
     const [password, setPassword] = useState('');
     const [showPassword, setShowPassword] = useState(false);
     const [error, setError] = useState('');
-    const navigate = useNavigate()
+    const navigate = useNavigate();
 
     const togglePasswordVisibility = () => {
         setShowPassword(!showPassword);
@@ -47,21 +47,26 @@ function LoginForm() {
     };
 
     return (
-        <div className='flex flex-row items-center h-[100vh] w-full'>
-            <div className='flex h-full w-[50%] bg-[#FBFAF9] shadow-md items-center justify-center'>
-                <div className='w-[886px] h-[510px]'>
-                <img className='w-full h-full' src={loginLog} alt="login logo" />
-                </div>
+        <div className='relative flex flex-col sm:flex-row items-center justify-center h-screen w-full'>
+            {/* Image container */}
+            <div className='absolute inset-0 sm:relative sm:h-full sm:w-[50%] flex items-center justify-center bg-[#FBFAF9] shadow-md'>
+                <img
+                    className='h-[200px] w-[200px] sm:h-[510px] sm:w-[886px] object-cover z-0'
+                    src={loginLogo}
+                    alt="login logo"
+                />
             </div>
-            <div className='flex w-[50%] items-center justify-center'>
-                <div className='flex flex-col items-center justify-center w-full px-52 font-sans text-xl gap-10'>
+
+            {/* Form container */}
+            <div className='relative sm:w-[50%] z-10 flex items-center justify-center'>
+                <div className='flex flex-col items-center justify-center w-full px-8 sm:px-16 md:px-52 font-sans text-xl gap-10'>
                     <div className='flex flex-col gap-7 w-full'>
                         <div className='flex justify-start items-start'>
-                            <img className='w-[286px] h-[128px]' src={companyLogo} alt="company logo" />
+                            <img className='w-[180px] h-[80px] sm:w-[286px] sm:h-[128px]' src={companyLogo} alt="company logo" />
                         </div>
                         <div className='flex flex-col'>
-                            <h2 className='text-4xl font-bold'>Welcome Back</h2>
-                            <p className='text-[#989898] text-2xl leading-10'>Welcome back! Please enter your details.</p>
+                            <h2 className='text-3xl sm:text-4xl font-bold'>Welcome Back</h2>
+                            <p className='text-[#989898] text-xl sm:text-2xl leading-8 sm:leading-10'>Welcome back! Please enter your details.</p>
                         </div>
                         {error && (
                             <p className="text-red-600 font-bold">{error}</p>
@@ -71,7 +76,7 @@ function LoginForm() {
                             <div className='flex flex-col items-start gap-2 justify-center w-full'>
                                 <label>Email</label>
                                 <input
-                                    className='outline-none text-2xl px-5 bg-[#EDEDED] py-6 rounded w-full'
+                                    className='outline-none text-xl sm:text-2xl px-4 sm:px-5 bg-[#EDEDED] py-4 sm:py-6 rounded w-full'
                                     type="email" 
                                     value={email} 
                                     onChange={(e) => setEmail(e.target.value)} 
@@ -81,20 +86,20 @@ function LoginForm() {
                             <div className='flex flex-col items-start gap-2 justify-center w-full relative'>
                                 <label>Password:</label>
                                 <input
-                                    className='outline-none text-2xl px-5 bg-[#EDEDED] py-6 rounded w-full'
+                                    className='outline-none text-xl sm:text-2xl px-4 sm:px-5 bg-[#EDEDED] py-4 sm:py-6 rounded w-full'
                                     type={showPassword ? "text" : "password"}
                                     value={password}
                                     onChange={(e) => setPassword(e.target.value)}
                                     required
                                 />
                                 <span 
-                                    className='absolute right-5 top-14 cursor-pointer'
+                                    className='absolute right-4 top-14 cursor-pointer'
                                     onClick={togglePasswordVisibility}
                                 >
                                     {showPassword ? <VisibilityOff sx={{width : '22px', height: '22px'}} /> : <RemoveRedEye sx={{width : '22px', height: '22px'}} />}
                                 </span>
                             </div>
-                            <button className='text-2xl mt-4 font-bold bg-black w-full py-3 rounded-md text-white hover:bg-red-400 shadow-md' type="submit">
+                            <button className='text-xl sm:text-2xl mt-4 font-bold bg-black w-full py-3 rounded-md text-white hover:bg-red-400 shadow-md' type="submit">
                                 Login
                             </button>
                         </form>

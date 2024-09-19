@@ -64,14 +64,22 @@ const SignUp = () => {
     const toggleConfirmPasswordVisibility = () => setShowConfirmPassword(!showConfirmPassword);
 
     return (
-        <div className='flex flex-row items-center h-[100vh] w-full'>
-            <div className='flex h-full w-[50%] bg-[#FBFAF9] shadow-md items-center justify-center'>
+        <div className='flex flex-col md:flex-row items-center h-[100vh] w-full'>
+            {/* Logo section - appears behind form on small devices */}
+            <div className='hidden md:flex h-full w-[50%] bg-[#FBFAF9] shadow-md items-center justify-center'>
                 <div className='w-[886px] h-[510px]'>
                     <img className='w-full h-full' src={signupLogo} alt="signup logo" />
                 </div>
             </div>
-            <div className='flex w-[50%] items-center justify-center'>
-                <div className='flex flex-col items-center justify-center w-full px-52 font-sans text-xl gap-10'>
+
+            {/* Signup form section */}
+            <div className='relative w-full md:w-[50%] flex items-center justify-center bg-white'>
+                {/* Mobile responsive background logo */}
+                <div className='absolute md:hidden w-full h-full inset-0 z-0'>
+                    <img src={signupLogo} alt="signup logo" className='w-full h-full object-cover opacity-10' />
+                </div>
+
+                <div className='relative z-10 flex flex-col items-center justify-center w-full px-8 md:px-52 font-sans text-xl gap-10'>
                     <div className='flex flex-col gap-7 w-full'>
                         <div className='flex justify-start items-start'>
                             <img className='w-[286px] h-[128px]' src={companyLogo} alt="company logo" />
