@@ -1,13 +1,12 @@
 import { MenuOpen, People, Settings } from '@mui/icons-material';
 import React, { useState } from 'react';
-import avatar from '../assets/IMG_1969.png'
 import reportIcon from '../assets/vector.svg'
 import DashboardIcon from '../assets/podium.svg'
 import peopleIcon from '../assets/people.svg'
 import cashIcon from '../assets/cash.svg'
 import spannerIcon from '../assets/vector-se.svg'
 
-const Sidebar = () => {
+const Sidebar = ({userData}) => {
     const [isOpen, setIsOpen] = useState(false);
     const [isSettingsOpen, setIsSettingsOpen] = useState(false);
 
@@ -37,10 +36,10 @@ const Sidebar = () => {
             <div className='flex w-full gap-12 font-bold flex-col mt-20'>
                 <div className={`flex flex-col items-center gap-4 transition-all duration-200 ease-in-out transform ${isOpen ? 'max-h-[100%] opacity-100' : 'max-h-0 opacity-0'} overflow-hidden`}>
                     <div className='w-[102px] h-[102px] bg-slate-100 shadow-lg rounded-full'>
-                        <img className='w-full rounded-full h-full' src={avatar} alt="" />
+                        <img className='w-full rounded-full h-full' src={userData.image} alt="" />
                     </div>
                     <div className=' flex flex-col items-center'>
-                        <h1 className='text-2xl font-bold'>Nosirudeen Olalekan</h1>
+                        <h1 className='text-2xl font-bold'>{`${userData.firstName} ${userData.lastName}`}</h1>
                         <h1 className='text-2xl font-normal text-[#989898]'>Admin</h1>
                     </div>
                 </div>

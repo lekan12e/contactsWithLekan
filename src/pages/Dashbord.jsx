@@ -18,6 +18,7 @@ function Dashboard() {
     const [isDeleting, setIsDeleting] = useState(null);  // For delete button spinner
     const [isEditing, setIsEditing] = useState(null);  // For edit button spinner
     const navigate = useNavigate();
+    const [userData, setUserData] = useState({})
 
     const checkAuth = async () => {
         const token = localStorage.getItem('token');
@@ -98,6 +99,28 @@ function Dashboard() {
             setIsEditing(null); // Stop edit spinner
         }
     };
+    const fetchUser = async () => {
+        const token = localStorage.getItem('token');
+        try {
+            const response = await fetch('https://sever-1-qnb2.onrender.com/api/user/current', {
+                method: 'GET',
+                headers: {
+                    'Authorization': `Bearer ${token}`,
+                },
+            });
+            // Check the entire response before extracting json
+        console.log('Fetch userData response:', response);
+            if (response.ok) {
+                const result = await response.json();
+                console.log('User Data:', result); // Check the structure of the result
+                setUserData(result); // Assuming result contains the user data
+            } else {
+                console.log('Error fetching user data:', response.statusText);
+            }
+        } catch (error) {
+            console.log('Fetch error:', error.message);
+        }
+      }
 
     const handleDelete = async (_id) => {
         setIsDeleting(_id); // Start delete spinner for this contact
@@ -135,6 +158,10 @@ function Dashboard() {
     };
 
     useEffect(() => {
+        fetchUser();
+    }, [])
+    
+    useEffect(() => {
         checkAuth(); 
     }, []);
 
@@ -148,7 +175,7 @@ function Dashboard() {
 
     return (
         <div className='flex'>
-            <Sidebar />
+            <Sidebar userData={userData} />
             <div className='flex overflow-hidden flex-col items-center justify-start p-10 bg-orange-200 h-full w-full'>
                 <h1 className='text-4xl font-bold mb-4'>Dashboard</h1>
                 <p>Create Contact</p>

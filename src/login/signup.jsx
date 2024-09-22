@@ -9,6 +9,9 @@ const SignUp = () => {
     const [password, setPassword] = useState('');
     const [confirmPassword, setConfirmPassword] = useState('');
     const [username, setUserName] = useState('');
+    const [firstName, setFirstName] = useState('');
+    const [lastName, setLastName] = useState('');
+    const [image, setImage] = useState(''); // For storing image URL
     const [error, setError] = useState('');
     const [message, setMessage] = useState('');
     const [loading, setLoading] = useState(false);
@@ -17,6 +20,47 @@ const SignUp = () => {
     const [showPassword, setShowPassword] = useState(false);
     const [showConfirmPassword, setShowConfirmPassword] = useState(false);
 
+    const compressImage = (file) => {
+        return new Promise((resolve, reject) => {
+            const reader = new FileReader();
+            reader.readAsDataURL(file);
+
+            reader.onload = (event) => {
+                const img = new Image();
+                img.src = event.target.result;
+
+                img.onload = () => {
+                    const canvas = document.createElement('canvas');
+                    const maxWidth = 500; // Max width for the compressed image
+                    const scaleSize = maxWidth / img.width;
+                    canvas.width = maxWidth;
+                    canvas.height = img.height * scaleSize;
+
+                    const ctx = canvas.getContext('2d');
+                    ctx.drawImage(img, 0, 0, canvas.width, canvas.height);
+
+                    // Convert the resized canvas to base64
+                    const compressedBase64 = canvas.toDataURL('image/jpeg', 0.7); // 70% quality
+                    resolve(compressedBase64);
+                };
+            };
+
+            reader.onerror = (error) => {
+                reject(error);
+            };
+        });
+    };
+
+
+    // Handle image upload and convert it to a base64 URL
+    const handleImageUpload = async (event) => {
+        const file = event.target.files[0]; // Get the selected file
+        if (file) {
+            const compressedImageUrl = await compressImage(file); // Compress the image
+            setImage(compressedImageUrl); // Set the compressed base64 URL
+        }
+    };
+console.log(image)
     const handleSubmit = async (e) => {
         e.preventDefault();
         setError('');
@@ -35,12 +79,20 @@ const SignUp = () => {
                 method: 'POST',
                 headers: {
                     'Content-Type': 'application/json',
-                    'ngrok-skip-browser-warning': 'true'
                 },
-                body: JSON.stringify({ username, email, password }),
+                body: JSON.stringify({
+                    username,
+                    email,
+                    password,
+                    firstName,
+                    lastName,
+                    image // Send the image base64 URL
+                }),
             });
 
             const data = await response.json();
+            console.log(data);
+            console.log(error.message)
 
             if (!response.ok) {
                 setError('Account already exists.');
@@ -91,10 +143,10 @@ const SignUp = () => {
                         {message && (
                             <p className="text-green-600 font-bold">{message}</p>
                         )}
-                        
+
                         <form className='flex flex-col pr-8 items-center gap-4' onSubmit={handleSubmit}>
                             <div className='flex flex-col items-start gap-2 justify-center w-full'>
-                                <label>Username:</label>
+                                <label>Username</label>
                                 <input
                                     className='outline-none text-2xl px-5 bg-[#EDEDED] py-6 rounded w-full'
                                     type="text"
@@ -104,7 +156,7 @@ const SignUp = () => {
                                 />
                             </div>
                             <div className='flex flex-col items-start gap-2 justify-center w-full'>
-                                <label>Email:</label>
+                                <label>Email</label>
                                 <input
                                     className='outline-none text-2xl px-5 bg-[#EDEDED] py-6 rounded w-full'
                                     type="email"
@@ -113,8 +165,45 @@ const SignUp = () => {
                                     required
                                 />
                             </div>
+
+                            {/* First Name and Last Name fields inline */}
+                            <div className='flex justify-between gap-4 w-full'>
+                                <div className='flex flex-col items-start gap-2 w-[50%]'>
+                                    <label>First Name</label>
+                                    <input
+                                        className='outline-none text-2xl px-5 bg-[#EDEDED] py-6 rounded w-full'
+                                        type="text"
+                                        value={firstName}
+                                        onChange={(e) => setFirstName(e.target.value)}
+                                        required
+                                    />
+                                </div>
+                                <div className='flex flex-col items-start gap-2 w-[50%]'>
+                                    <label>Last Name</label>
+                                    <input
+                                        className='outline-none text-2xl px-5 bg-[#EDEDED] py-6 rounded w-full'
+                                        type="text"
+                                        value={lastName}
+                                        onChange={(e) => setLastName(e.target.value)}
+                                        required
+                                    />
+                                </div>
+                            </div>
+
+                            {/* Image Upload */}
+                            <div className='flex flex-col items-start gap-2 justify-center w-full'>
+                                <label>Profile Picture</label>
+                                <input
+                                    className='outline-none text-2xl px-5 py-6 rounded w-full'
+                                    type="file"
+                                    accept="image/*"
+                                    onChange={handleImageUpload}
+                                    required
+                                />
+                            </div>
+
                             <div className='flex flex-col items-start gap-2 justify-center w-full relative'>
-                                <label>Password:</label>
+                                <label>Password</label>
                                 <input
                                     className='outline-none text-2xl px-5 bg-[#EDEDED] py-6 rounded w-full'
                                     type={showPassword ? "text" : "password"}
@@ -130,7 +219,7 @@ const SignUp = () => {
                                 </span>
                             </div>
                             <div className='flex flex-col items-start gap-2 justify-center w-full relative'>
-                                <label>Confirm Password:</label>
+                                <label>Confirm Password</label>
                                 <input
                                     className='outline-none text-2xl px-5 bg-[#EDEDED] py-6 rounded w-full'
                                     type={showConfirmPassword ? "text" : "password"}
@@ -146,18 +235,12 @@ const SignUp = () => {
                                 </span>
                             </div>
                             <button className='text-2xl mt-4 font-bold bg-black w-full py-3 rounded-md text-white hover:bg-red-400 shadow-md flex justify-center items-center' type="submit">
-                                {loading ? (
-                                    <div className="w-6 h-6 border-4 border-dotted border-white border-t-transparent animate-spin rounded-full"></div>
-                                ) : (
-                                    'Sign Up'
-                                )}
+                                {loading ? 'Creating Account...' : 'Create Account'}
                             </button>
                         </form>
-                        <div className='pt-10 text-end'>
-                            <p>
-                                Already have an account? <Link className='text-white font-bold bg-slate-500 rounded-md p-2 hover:bg-red-400 hover:text-green-300' to='/'>Log In</Link>
-                            </p>
-                        </div>
+                        <p className='text-[#989898] text-xl text-center'>
+                            Already have an account? <Link className='font-semibold text-black' to="/">Sign in</Link>
+                        </p>
                     </div>
                 </div>
             </div>
