@@ -1,10 +1,10 @@
 import { MenuOpen, People, Settings } from '@mui/icons-material';
 import React, { useState } from 'react';
-import reportIcon from '../assets/vector.svg'
+import reportIcon from '../assets/Vector.svg'
 import DashboardIcon from '../assets/podium.svg'
 import peopleIcon from '../assets/people.svg'
 import cashIcon from '../assets/cash.svg'
-import spannerIcon from '../assets/vector-se.svg'
+import spannerIcon from '../assets/Vector-se.svg'
 
 const Sidebar = ({userData}) => {
     const [isOpen, setIsOpen] = useState(false);
